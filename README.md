@@ -1,5 +1,10 @@
-
 Simple test helper for go
+
+[![GitHub tag (latest SemVer)](https://img.shields.io/github/tag/rsms/go-testutil.svg)][godoc]
+[![PkgGoDev](https://pkg.go.dev/badge/github.com/rsms/go-testutil)][godoc]
+[![Go Report Card](https://goreportcard.com/badge/github.com/rsms/go-testutil)](https://goreportcard.com/report/github.com/rsms/go-testutil)
+
+[godoc]: https://pkg.go.dev/github.com/rsms/go-testutil
 
 Synopsis
 
