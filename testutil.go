@@ -82,13 +82,22 @@ func (a Assert) Eq(assertionfmt string, value1, value2 interface{}, v ...interfa
 	if value1 == nil && value2 == nil {
 		return true
 	}
+
+	t1, t2 := reflect.TypeOf(value1), reflect.TypeOf(value2)
+
 	if value1 == nil || value2 == nil {
+		if value1 == nil && reflect.ValueOf(value2).IsZero() {
+			// e.g. var value1 []byte, var value2 []byte = []byte{}
+			return true
+		}
+		if value2 == nil && reflect.ValueOf(value1).IsZero() {
+			// e.g. var value2 []byte, var value1 []byte = []byte{}
+			return true
+		}
 		a.T.Errorf("FAIL: "+assertionfmt+"\nvalue1: %s\nvalue2: %s",
 			append(v, Repr(value1), Repr(value2))...)
 		return false
 	}
-	v1, v2 := reflect.ValueOf(value1), reflect.ValueOf(value2)
-	t1, t2 := v1.Type(), v2.Type()
 
 	if t1 != t2 {
 		a.T.Errorf("FAIL: "+assertionfmt+"; types differ:\nvalue1: %T\nvalue2: %T",
@@ -96,6 +105,7 @@ func (a Assert) Eq(assertionfmt string, value1, value2 interface{}, v ...interfa
 		return false
 	}
 
+	v1, v2 := reflect.ValueOf(value1), reflect.ValueOf(value2)
 	if v1.CanAddr() && v1.UnsafeAddr() == v2.UnsafeAddr() {
 		return true
 	}
